@@ -2,8 +2,9 @@
 import logging 
 
 logging.basicConfig(
-    format='%(process)d-%(levelname)s-%(message)s',
-    level = logging.INFO,
+    format='%(asctime)s [%(process)d] %(levelname)s %(name)s: %(message)s',
+    level=logging.INFO,
+    force=True
 )
 
 logger = logging.getLogger('Data Engineer Project')
