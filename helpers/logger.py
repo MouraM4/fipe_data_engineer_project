@@ -8,4 +8,3 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger('Data Engineer Project')
-logger.info('teste')
