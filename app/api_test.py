@@ -1,8 +1,5 @@
-import json
-import requests
-import time
+import pandas as pd
 
-from helpers.logger import logger
 from helpers.fipe_functions import *
 
 
@@ -29,7 +26,5 @@ for model in ferrari_models:
         car_info = get_price_with_all_params(ferrari_brand_code, model_code, year_model, year)
         ferrari_cars_info.append(car_info)
         print(f"Model: {car_info.get('Modelo')} - Price: {car_info.get('Valor')} - Year: {year}")
-
-import pandas as pd
 
 ferrari_df = pd.DataFrame(ferrari_cars_info)
