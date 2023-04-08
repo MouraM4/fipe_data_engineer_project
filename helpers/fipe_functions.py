@@ -2,169 +2,95 @@ import requests
 
 from helpers.logger import logger
 
-car_info_json = {
-    "codigoTipoVeiculo": "",
-    "codigoTabelaReferencia": "",
-    "codigoMarca": "",
-    "codigoModelo": "",
-    "ano": "",
-    "codigoTipoCombustivel": "",
-    "anoModelo": "",
-    "tipoVeiculo": "",
-    "tipoConsulta": ""
-}
 
-def get_all_car_brands() -> list:
-    """Get a list of car Brands"""
+class FipeIntegration:
 
-    brand_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas'
+    def __init__(self):
 
-    brand_payload = {
-        "codigoTabelaReferencia": 296,
-        "codigoTipoVeiculo": 1
-    }
-
-    try:
-        get_brands_request = requests.post(
-            brand_endpoint,
-            data=brand_payload
-        )        
-        
-        if get_brands_request.status_code == 200:
-            brands_list = get_brands_request.json()
-            return brands_list
-
-        else:
-            raise Exception('It was not possible to get all brands!')
-        
-    except Exception as err:
-        logger.error(err)
+        self.car_info_json = {
+            "codigoTipoVeiculo": "",
+            "codigoTabelaReferencia": "",
+            "codigoMarca": "",
+            "codigoModelo": "",
+            "ano": "",
+            "codigoTipoCombustivel": "",
+            "anoModelo": "",
+            "tipoVeiculo": "",
+            "tipoConsulta": ""
+        }
 
 
-def get_all_car_models(brand_code: str) -> dict:
-    """Get a list of car models from a brand"""
+    def fipe_endpoint_request(self, endpoint_to_request: str):
+        """Request infos from FIPE endpoints"""
 
-    models_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarModelos'
+        try:
+            get_brands_request = requests.post(
+                endpoint_to_request,
+                data=self.car_info_json
+            )        
+            
+            if get_brands_request.status_code == 200:
+                brands_list = get_brands_request.json()
+                return brands_list
 
-    model_payload = {
-        "codigoTabelaReferencia": 296,
-        "codigoTipoVeiculo": 1,
-        "codigoMarca": brand_code
-    }
-
-    try:
-        get_models_request = requests.post(
-            models_endpoint,
-            data=model_payload
-        )        
-        
-        if get_models_request.status_code == 200:
-            models = get_models_request.json()
-            return models
-
-        else:
-            raise Exception(
-                'It was not possible to get all models for brand code: ', brand_code
-            )
-        
-    except Exception as err:
-        logger.error(err)
+            else:
+                raise Exception(
+                    'It was not possible to consult endpoint: ', 
+                    endpoint_to_request
+                )
+            
+        except Exception as err:
+            logger.error(err)
 
 
-def get_car_model_year(brand_code: str, model_code: str) -> list:
-    """Get a list of car model and year"""
+    def get_all_car_brands(self) -> list:
+        """Get a list of car Brands"""
 
-    year_model_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModelo'
+        brand_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas'
 
-    year_model_payload = {
-        "codigoTabelaReferencia": 296,
-        "codigoTipoVeiculo": 1,
-        "codigoMarca": brand_code,
-        "codigoModelo": model_code
-    }
+        self.car_info_json.update({
+            "codigoTabelaReferencia": 296,
+            "codigoTipoVeiculo": 1
+        })
 
-    try:
-        get_year_model_request = requests.post(
-            year_model_endpoint,
-            data=year_model_payload
-        )        
-        
-        if get_year_model_request.status_code == 200: # Refatorar esse código, usar status_code != 200
-            year_model_list = get_year_model_request.json()
-            return year_model_list
-
-        else:
-            raise Exception(
-                'It was not possible to get all models and year for model code: ', model_code
-            )
-        
-    except Exception as err:
-        logger.error(err)
- 
-
-def get_model_by_year(brand_code, model_code, year_model, year):
-    """Get a list of car models by year"""
-
-    model_by_year_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarModelosAtravesDoAno'
-
-    model_by_year_payload = {
-        "codigoTabelaReferencia": 296,
-        "codigoTipoVeiculo": 1,
-        "codigoMarca": brand_code,
-        "codigoModelo": model_code,
-        "ano": year_model,
-        "anoModelo": year
-    }
-
-    try:
-        get_model_by_year_request = requests.post(
-            model_by_year_endpoint,
-            data=model_by_year_payload
-        )        
-        
-        if get_model_by_year_request.status_code == 200: # Refatorar esse código, usar status_code != 200
-            models_by_year_list = get_model_by_year_request.json()
-            return models_by_year_list
-
-        else:
-            raise Exception(
-                'It was not possible to get all models BY year for model code: ', model_code
-            )
-        
-    except Exception as err:
-        logger.error(err)
+        return self.fipe_endpoint_request(brand_endpoint)      
 
 
-def get_price_with_all_params(brand_code, model_code, year_model, year):
-    """Get price given all car parameters"""
-    price_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros'
+    def get_all_car_models(self, brand_code: str) -> dict:
+        """Get a list of car models from a brand"""
 
-    price_payload = {
-        "codigoTabelaReferencia": 296,
-        "codigoTipoVeiculo": 1,
-        "codigoMarca": brand_code,
-        "codigoModelo": model_code,
-        "ano": year_model,
-        "anoModelo": year,
-        "tipoVeiculo": 'carro',
-        "tipoConsulta": 'tradicional',
-        "codigoTipoCombustivel": 1
-    }
+        models_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarModelos'
 
-    try:
-        get_price_request = requests.post(
-            price_endpoint,
-            data=price_payload
-        )        
-        
-        if get_price_request.status_code == 200: # Refatorar esse código, usar status_code != 200
-            car_infos = get_price_request.json()
-            return car_infos
+        self.car_info_json.update({
+            "codigoMarca": brand_code
+        })
 
-        else:
-            raise Exception(
-                'It was not possible to get car infos for model code: ', model_code
-            )
-        
-    except Exception as err:
-        logger.error(err)
+        return self.fipe_endpoint_request(models_endpoint)   
+
+
+    def get_car_model_year(self, brand_code: str, model_code: str) -> list:
+        """Get a list of car model and year"""
+
+        year_model_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModelo'
+
+        self.car_info_json.update({
+            "codigoMarca": brand_code,
+            "codigoModelo": model_code
+        })
+
+        return self.fipe_endpoint_request(year_model_endpoint) 
+    
+
+    def get_price_with_all_params(self, year_model, year, fuel_type):
+        """Get price given all car parameters"""
+        price_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros'
+
+        self.car_info_json.update({
+            "ano": year_model,
+            "anoModelo": year,
+            "tipoVeiculo": 'carro',
+            "tipoConsulta": 'tradicional',
+            "codigoTipoCombustivel": fuel_type
+        })
+
+        return self.fipe_endpoint_request(price_endpoint) 
