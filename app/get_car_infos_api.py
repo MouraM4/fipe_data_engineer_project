@@ -1,6 +1,10 @@
+import json
+
 import pandas as pd
 
+from datetime import datetime
 from helpers.fipe_functions import FipeIntegration
+from helpers.kinesis_aws import AWSFirehose
 from helpers.logger import logger
 
 
@@ -32,5 +36,12 @@ if __name__ == '__main__':
                 car_info = fipe_integration.get_price_with_all_params(year_model, year, fuel_type)
                 brand_cars_info.append(car_info)
                 logger.info(f"Brand: {brand_name} - Model: {car_info.get('Modelo')} - Price: {car_info.get('Valor')} - Year: {year}")
+            
+    with open('car_brands.json', 'w') as f:
+        json.dump(brand_cars_info, f)
 
+    # Send data to firehose
+    aws_firehose = AWSFirehose()
+    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info))
+   
     cars_brand_df = pd.DataFrame(brand_cars_info)

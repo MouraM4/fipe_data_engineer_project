@@ -1,5 +1,35 @@
 
+=== To do ===
 
-1 - Add the json crack reference to convert a complex JSON in a graph.
-    1.1 - Add a print showing how this can help to understand better the JSON
+
+===== Application
+
+1 - Create the webscraping API that will get all Brand's vehicle price information
+
+    1.1 - Create a Class with all endpoint calls
+
+    1.2 - Create a main function that calls all methods inside the FIPE Integration class
+
+
+===== Infrastructure and Architecture
+
+2 - Create a S3 bucket to save all objects (JSONs) about vehicles information
+
+3 - Create a Kinesis Firehose to save data into S3 Bucket in a aggregated format
+
+4 - Do a test a send some information to Kinesis Firehose
+
+5 - Create a lambda function with monthly schedule runs to send data to Kinesis Firehose
+
+    > Use serverless framework
+
+6 - Create all infrastructure using Terraform
+
+
+===== Deploy Process
+
+7 - Create a CI/CD process to automate the deploy process of Lambda and infrastructure
+
+
+
 
