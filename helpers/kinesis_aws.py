@@ -16,7 +16,7 @@ class AWSFirehose:
         try:
 
             response = self.client.put_record_batch(
-                DeliveryStreamName='KINESIS-FIREHOSE-FIPE-PROJECT',
+                DeliveryStreamName='kinesis-firehose-fipe-project',
                 Records=[
                     {
                         'Data': data
