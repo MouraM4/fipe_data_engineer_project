@@ -83,14 +83,20 @@ class FipeIntegration:
 
     def get_price_with_all_params(self, year_model, year, fuel_type):
         """Get price given all car parameters"""
-        price_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros'
 
-        self.car_info_json.update({
-            "ano": year_model,
-            "anoModelo": year,
-            "tipoVeiculo": 'carro',
-            "tipoConsulta": 'tradicional',
-            "codigoTipoCombustivel": fuel_type
-        })
+        try:
+            price_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros'
 
-        return self.fipe_endpoint_request(price_endpoint) 
+            self.car_info_json.update({
+                "ano": year_model,
+                "anoModelo": year,
+                "tipoVeiculo": 'carro',
+                "tipoConsulta": 'tradicional',
+                "codigoTipoCombustivel": fuel_type
+            })
+
+            return self.fipe_endpoint_request(price_endpoint) 
+        
+        except Exception as err:
+            logger.info('Error: ', err)
+            return {'error': err}

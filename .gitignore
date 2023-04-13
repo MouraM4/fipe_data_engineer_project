@@ -109,3 +109,5 @@ Pipfile*
 
 # VsCode Folder
 .vscode/
+
+car_brands.json
