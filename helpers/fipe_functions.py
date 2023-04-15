@@ -99,4 +99,16 @@ class FipeIntegration:
         
         except Exception as err:
             logger.info('Error: ', err)
-            return {'error': err}
+            return {
+                'Valor': None,
+                'Marca': None,
+                'Modelo': None,
+                'AnoModelo': None,
+                'Combustivel': None,
+                'CodigoFipe': None,
+                'MesReferencia': None,
+                'Autenticacao': None,
+                'TipoVeiculo': None,
+                'SiglaCombustivel': None,
+                'DataConsulta': None
+            }

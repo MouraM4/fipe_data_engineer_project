@@ -44,6 +44,6 @@ if __name__ == '__main__':
 
     # Send data to firehose
     aws_firehose = AWSFirehose()
-    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info).replace('[','').replace(']',''))
+    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info).replace('[','').replace(']','').replace('}, ',r'}\n'))
    
     cars_brand_df = pd.DataFrame(brand_cars_info)
