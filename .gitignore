@@ -111,3 +111,4 @@ Pipfile*
 .vscode/
 
 car_brands.json
+car_brands.txt

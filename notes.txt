@@ -37,3 +37,5 @@
 
 
 
+error
+2023-04-16 22:02:00,044 [11405] ERROR Data Engineer Project: An error occurred (ValidationException) when calling the PutRecordBatch operation: 1 validation error detected: Value at 'records.1.member.data' failed to satisfy constraint: Member must have length less than or equal to 1024000

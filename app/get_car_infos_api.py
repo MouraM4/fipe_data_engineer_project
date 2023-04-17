@@ -35,15 +35,21 @@ if __name__ == '__main__':
                 fuel_type = year_model.split("-")[1]
                 car_info = fipe_integration.get_price_with_all_params(year_model, year, fuel_type)
                 
-                brand_cars_info.append(car_info)
-                logger.info(f"Brand: {brand_name} - Model: {car_info.get('Modelo')} - Price: {car_info.get('Valor')} - Year: {year}")
+                if car_info:
+                    brand_cars_info.append(car_info)
+                    logger.info(f"Brand: {brand_name} - Model: {car_info.get('Modelo')} - Price: {car_info.get('Valor')} - Year: {year}")
+                else:
+                    logger.info('None Value')
             
-    with open('car_brands.json', 'w') as f:
-        json.dumps(brand_cars_info, f)
+    # with open('car_brands.txt', 'w') as f:
+    #     f.write(json.dumps(brand_cars_info).replace('[','').replace(']','').replace('}, ',r'}\n'))
+
+    # with open('car_brands.json', 'r') as f:
+    #     brand_cars_info = f.read()
 
 
     # Send data to firehose
     aws_firehose = AWSFirehose()
-    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info).replace('[','').replace(']','').replace('}, ',r'}\n'))
+    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info).replace('[','').replace(']',''))
    
     cars_brand_df = pd.DataFrame(brand_cars_info)
