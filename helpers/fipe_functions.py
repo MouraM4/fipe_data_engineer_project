@@ -45,7 +45,7 @@ class FipeIntegration:
             
         except Exception as err:
             logger.info('Error: %s', err)
-            return self.car_info_json
+            return 'Error'
 
 
     def get_all_car_brands(self) -> list:

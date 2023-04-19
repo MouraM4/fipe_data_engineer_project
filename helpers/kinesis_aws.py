@@ -17,12 +17,14 @@ class AWSFirehose:
 
             response = self.client.put_record(
                 DeliveryStreamName='kinesis-firehose-fipe-project',
-                Record={
-                    'Data': data
-                }
+                Records=[
+                    {
+                        'Data': data
+                    }
+                ]
             )
 
-            logger.info('Data uploaded into firehose')
+            logger.info('\nData uploaded into firehose')
 
         except Exception as err:
             logger.error(err)
