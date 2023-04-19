@@ -1,8 +1,6 @@
 import json
+import ujson
 
-import pandas as pd
-
-from datetime import datetime
 from helpers.fipe_functions import FipeIntegration
 from helpers.kinesis_aws import AWSFirehose
 from helpers.logger import logger
@@ -10,12 +8,12 @@ from helpers.logger import logger
 
 if __name__ == '__main__':
 
+    aws_firehose = AWSFirehose()
     fipe_integration = FipeIntegration()
 
     # Get all car brand
     all_brand_list = fipe_integration.get_all_car_brands()
     brand_cars_info = []
-
     for brand in all_brand_list:
 
         # Get all cars info from all Car Brands
@@ -35,21 +33,9 @@ if __name__ == '__main__':
                 fuel_type = year_model.split("-")[1]
                 car_info = fipe_integration.get_price_with_all_params(year_model, year, fuel_type)
                 
-                if car_info:
+                if car_info and not isinstance(car_info, str):
                     brand_cars_info.append(car_info)
+                    aws_firehose.kinesis_firehose_put_record(ujson.dumps(brand_cars_info).replace('[','').replace(']','').replace('}, ',r'}\n'))
                     logger.info(f"Brand: {brand_name} - Model: {car_info.get('Modelo')} - Price: {car_info.get('Valor')} - Year: {year}")
                 else:
                     logger.info('None Value')
-            
-    # with open('car_brands.txt', 'w') as f:
-    #     f.write(json.dumps(brand_cars_info).replace('[','').replace(']','').replace('}, ',r'}\n'))
-
-    # with open('car_brands.json', 'r') as f:
-    #     brand_cars_info = f.read()
-
-
-    # Send data to firehose
-    aws_firehose = AWSFirehose()
-    aws_firehose.kinesis_firehose_put_record(json.dumps(brand_cars_info).replace('[','').replace(']',''))
-   
-    cars_brand_df = pd.DataFrame(brand_cars_info)

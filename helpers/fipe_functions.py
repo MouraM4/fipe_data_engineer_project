@@ -1,6 +1,8 @@
 import requests
+import urllib3
 
 from helpers.logger import logger
+from retry import retry
 
 
 class FipeIntegration:
@@ -19,13 +21,15 @@ class FipeIntegration:
             "tipoConsulta": ""
         }
 
-
+    @retry(urllib3.exceptions.MaxRetryError, delay=5, backoff=2, tries=3)
     def fipe_endpoint_request(self, endpoint_to_request: str):
         """Request infos from FIPE endpoints"""
 
+        url = "https://veiculos.fipe.org.br/api/veiculos/" + endpoint_to_request
+
         try:
             get_brands_request = requests.post(
-                endpoint_to_request,
+                url,
                 data=self.car_info_json
             )        
             
@@ -36,79 +40,67 @@ class FipeIntegration:
             else:
                 raise Exception(
                     'It was not possible to consult endpoint: ', 
-                    endpoint_to_request
+                    url
                 )
             
         except Exception as err:
-            logger.error(err)
+            logger.info('Error: %s', err)
+            return self.car_info_json
 
 
     def get_all_car_brands(self) -> list:
         """Get a list of car Brands"""
 
-        brand_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas'
+
+        brand_endpoint = 'ConsultarMarcas'
 
         self.car_info_json.update({
             "codigoTabelaReferencia": 296,
             "codigoTipoVeiculo": 1
         })
 
-        return self.fipe_endpoint_request(brand_endpoint)      
+        return self.fipe_endpoint_request(brand_endpoint)    
 
 
     def get_all_car_models(self, brand_code: str) -> dict:
         """Get a list of car models from a brand"""
 
-        models_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarModelos'
+
+        models_endpoint = 'ConsultarModelos'
 
         self.car_info_json.update({
             "codigoMarca": brand_code
         })
 
-        return self.fipe_endpoint_request(models_endpoint)   
-
+        return self.fipe_endpoint_request(models_endpoint) 
+    
 
     def get_car_model_year(self, brand_code: str, model_code: str) -> list:
         """Get a list of car model and year"""
 
-        year_model_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModelo'
+
+        year_model_endpoint = 'ConsultarAnoModelo'
 
         self.car_info_json.update({
             "codigoMarca": brand_code,
             "codigoModelo": model_code
         })
 
-        return self.fipe_endpoint_request(year_model_endpoint) 
+        return self.fipe_endpoint_request(year_model_endpoint)
     
 
     def get_price_with_all_params(self, year_model, year, fuel_type):
         """Get price given all car parameters"""
 
-        try:
-            price_endpoint = 'https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros'
 
-            self.car_info_json.update({
-                "ano": year_model,
-                "anoModelo": year,
-                "tipoVeiculo": 'carro',
-                "tipoConsulta": 'tradicional',
-                "codigoTipoCombustivel": fuel_type
-            })
+        price_endpoint = 'ConsultarValorComTodosParametros'
 
-            return self.fipe_endpoint_request(price_endpoint) 
-        
-        except Exception as err:
-            logger.info('Error: ', err)
-            return {
-                'Valor': None,
-                'Marca': None,
-                'Modelo': None,
-                'AnoModelo': None,
-                'Combustivel': None,
-                'CodigoFipe': None,
-                'MesReferencia': None,
-                'Autenticacao': None,
-                'TipoVeiculo': None,
-                'SiglaCombustivel': None,
-                'DataConsulta': None
-            }
+        self.car_info_json.update({
+            "ano": year_model,
+            "anoModelo": year,
+            "tipoVeiculo": 'carro',
+            "tipoConsulta": 'tradicional',
+            "codigoTipoCombustivel": fuel_type
+        })
+
+        return self.fipe_endpoint_request(price_endpoint) 

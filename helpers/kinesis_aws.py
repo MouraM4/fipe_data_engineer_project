@@ -15,25 +15,15 @@ class AWSFirehose:
         
         try:
 
-            response = self.client.put_record_batch(
+            response = self.client.put_record(
                 DeliveryStreamName='kinesis-firehose-fipe-project',
-                Records=[
-                    {
-                        'Data': data
-                    }
-                ]
+                Record={
+                    'Data': data
+                }
             )
 
-            if response.get('FailedPutCount') == 0:
-                logger.info('Data uploaded into firehose')
-
-            else:
-                logger.info('Data was not uploaded into firehose')
+            logger.info('Data uploaded into firehose')
 
         except Exception as err:
             logger.error(err)
-
-    
-
-
     
