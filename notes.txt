@@ -1,5 +1,41 @@
 
+=== To do ===
 
-1 - Add the json crack reference to convert a complex JSON in a graph.
-    1.1 - Add a print showing how this can help to understand better the JSON
 
+===== Application
+
+1 - Create the webscraping API that will get all Brand's vehicle price information
+
+    1.1 - Create a Class with all endpoint calls
+
+    1.2 - Create a main function that calls all methods inside the FIPE Integration class
+
+
+===== Infrastructure and Architecture
+
+2 - Create a S3 bucket to save all objects (JSONs) about vehicles information
+
+3 - Create a Kinesis Firehose to save data into S3 Bucket in a aggregated format
+
+4 - Do a test a send some information to Kinesis Firehose
+
+5 - Create a glue job that convert the json file into parquet
+
+6 - Create a redshift that reads the parquet data from the csv
+
+7 - Create a lambda function with monthly schedule runs to send data to Kinesis Firehose
+
+    > Use serverless framework
+
+8 - Create all infrastructure using Terraform
+
+
+===== Deploy Process
+
+7 - Create a CI/CD process to automate the deploy process of Lambda and infrastructure
+
+
+
+
+error
+2023-04-16 22:02:00,044 [11405] ERROR Data Engineer Project: An error occurred (ValidationException) when calling the PutRecordBatch operation: 1 validation error detected: Value at 'records.1.member.data' failed to satisfy constraint: Member must have length less than or equal to 1024000
