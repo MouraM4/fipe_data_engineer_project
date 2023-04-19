@@ -34,18 +34,16 @@ if __name__ == '__main__':
                 fuel_type = year_model.split("-")[1]
                 car_info = fipe_integration.get_price_with_all_params(year_model, year, fuel_type)
                 
-                if car_info and not isinstance(car_info, str) and len(brand_cars_info) < 100:
+                if car_info and not isinstance(car_info, str) and len(brand_cars_info) < 10:
                     brand_cars_info.append(car_info)
                     logger.info('\n%s\n', car_info)
 
-                elif len(brand_cars_info) >= 100:
+                elif len(brand_cars_info) >= 10:
                     print(len(brand_cars_info))
-                    # regex_pattern = r'(?:\[|\])|},\s*'
-                    # output = re.sub(regex_pattern, lambda x: r'}\n' if x.group() == '},' else '', ujson.dumps(brand_cars_info))
-                    aws_firehose.kinesis_firehose_put_record(ujson.dumps(car_info))
+                    regex_pattern = r'(?:\[|\])|},\s*'
+                    output = re.sub(regex_pattern, lambda x: '}' if x.group() == '},' else '', ujson.dumps(brand_cars_info))
+                    aws_firehose.kinesis_firehose_put_record(output)
                     brand_cars_info = []
 
                 else:
                     logger.info('None Value')
-
-
