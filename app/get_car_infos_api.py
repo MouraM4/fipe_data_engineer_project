@@ -15,6 +15,8 @@ if __name__ == '__main__':
     # Get all car brand
     all_brand_list = fipe_integration.get_all_car_brands()
     brand_cars_info = []
+    batch_size = 100
+
     for brand in all_brand_list:
 
         # Get all cars info from all Car Brands
@@ -34,11 +36,11 @@ if __name__ == '__main__':
                 fuel_type = year_model.split("-")[1]
                 car_info = fipe_integration.get_price_with_all_params(year_model, year, fuel_type)
                 
-                if car_info and not isinstance(car_info, str) and len(brand_cars_info) < 10:
+                if car_info and not isinstance(car_info, str) and len(brand_cars_info) < batch_size:
                     brand_cars_info.append(car_info)
                     logger.info('\n%s\n', car_info)
 
-                elif len(brand_cars_info) >= 10:
+                elif len(brand_cars_info) >= batch_size:
                     print(len(brand_cars_info))
                     regex_pattern = r'(?:\[|\])|},\s*'
                     output = re.sub(regex_pattern, lambda x: '}' if x.group() == '},' else '', ujson.dumps(brand_cars_info))
