@@ -112,3 +112,7 @@ Pipfile*
 
 car_brands.json
 car_brands.txt
+
+# Terraform
+.terraform*
+terraform.tfstate*
