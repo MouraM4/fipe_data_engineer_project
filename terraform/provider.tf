@@ -15,9 +15,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "fipe-project-infrastructure"
-    key    = "terraform/terraform.tfstate"
-    region = "us-east-1"
+    bucket  = "fipe-project-infrastructure"
+    key     = "terraform/terraform.tfstate"
+    region  = "us-east-1"
     profile = "default"
   }
 }
