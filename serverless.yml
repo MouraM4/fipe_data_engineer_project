@@ -32,8 +32,12 @@ package:
     - '!.serverless'
     - '!__pycache__'
     - '!.git'
-    - '!terraform/'
+    - '!terraform/**'
     - '!notes.txt'
+    - '!car_brands.json'
+    - '!car_brands.txt'
+    - '!__pycache__'
+    - '!node_modules/**'
 
 functions:
   fipe_get_brand_cars_info:
