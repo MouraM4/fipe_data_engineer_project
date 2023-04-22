@@ -1,0 +1,45 @@
+service: fipe-data-engineer-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  profile: default
+  deploymentBucket:
+    name: serverless-fipe-deploy
+    serverSideEncryption: AES256
+  stage:  ${opt:stage, 'dev'}
+  memorySize: 256
+  runtime: python3.8
+
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+              - "firehose:DescribeDeliveryStream"
+              - "firehose:PutRecordBatch"
+              - "firehose:ListDeliveryStreams"
+              - "firehose:ListTagsForDeliveryStream"
+          Resource:
+            - "arn:aws:firehose:us-east-1:776769614840:deliverystream/kinesis-firehose-fipe-project"
+
+package:
+  patterns:
+    - 'app/'
+    - 'help_functions/'
+    - '!node_modules/**'
+    - '!serverless.yml'
+    - '!.serverless'
+    - '!__pycache__'
+    - '!.git'
+    - '!terraform/'
+    - '!notes.txt'
+
+functions:
+  fipe_get_brand_cars_info:
+    handler: app/get_car_infos_api.get_car_infos_api
+    timeout: 900
+
+
+plugins:
+  - serverless-deployment-bucket
