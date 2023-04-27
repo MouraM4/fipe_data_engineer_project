@@ -137,3 +137,7 @@ car_brands.txt
 # Terraform
 .terraform*
 terraform.tfstate*
+
+# Layer ignore files
+package.json
+package-lock.json
