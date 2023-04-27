@@ -1,0 +1,45 @@
+service: lambda-layers
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.10
+  memorySize: 256
+  stage: dev
+  region: us-east-1
+  deploymentBucket:
+    name: serverless-fipe-deploy
+    serverSideEncryption: AES256
+
+
+functions:
+  fipe-layer:
+    handler: handler.hello
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+
+
+plugins:
+  - serverless-python-requirements
+  - serverless-deployment-bucket
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    layer: true
+
+package:
+  patterns:
+    - 'app/'
+    - 'help_functions/'
+    - '!node_modules/**'
+    - '!serverless.yml'
+    - '!.serverless'
+    - '!__pycache__'
+    - '!.git'
+    - '!terraform/**'
+    - '!notes.txt'
+    - '!car_brands.json'
+    - '!car_brands.txt'
+    - '!__pycache__'
+    - '!package.json'
