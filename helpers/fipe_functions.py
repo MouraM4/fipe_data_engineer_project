@@ -2,7 +2,6 @@ import requests
 import urllib3
 
 from helpers.logger import logger
-from retry import retry
 
 
 class FipeIntegration:
@@ -21,7 +20,6 @@ class FipeIntegration:
             "tipoConsulta": ""
         }
 
-    @retry(urllib3.exceptions.MaxRetryError, delay=5, backoff=2, tries=3)
     def fipe_endpoint_request(self, endpoint_to_request: str):
         """Request infos from FIPE endpoints"""
 
@@ -45,7 +43,7 @@ class FipeIntegration:
             
         except Exception as err:
             logger.info('Error: %s', err)
-            return self.car_info_json
+            return 'Error'
 
 
     def get_all_car_brands(self) -> list:

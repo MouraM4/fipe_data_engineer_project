@@ -1,3 +1,24 @@
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Serverless directories
+.serverless
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -112,3 +133,11 @@ Pipfile*
 
 car_brands.json
 car_brands.txt
+
+# Terraform
+.terraform*
+terraform.tfstate*
+
+# Layer ignore files
+package.json
+package-lock.json
