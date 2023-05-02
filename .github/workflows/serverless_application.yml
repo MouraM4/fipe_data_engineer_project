@@ -1,0 +1,16 @@
+name: Deploy AWS Lambda with Serverless Framework
+run-name: Deploy AWS Lambda App 🚀
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Serverless and npm dependencies
+        run: |
+          sudo npm i -g serverless@2.52.0 npm@latest
+          npm install
+      - name: Deploy Application
+        run: sls deploy
