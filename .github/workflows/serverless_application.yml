@@ -7,10 +7,13 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
     steps:
       - name: Install Serverless and npm dependencies
-        run: |
-          sudo npm i -g serverless@2.52.0 npm@latest
-          npm install
+        run: sudo npm i -g serverless@2.52.0 npm@latest
+      - name: Install npm dependencies  
+        run: npm install
       - name: Deploy Application
         run: sls deploy

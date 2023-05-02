@@ -9,5 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: hashicorp/setup-terraform@v2
+      - run: cd terraform/
       - run: terraform init
       - run: terraform plan
