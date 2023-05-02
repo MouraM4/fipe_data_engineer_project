@@ -1,0 +1,13 @@
+name: Create infrastructure with Terraform
+run-name: Create infrastructure with Terraform 🚀
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform init
+      - run: terraform plan
