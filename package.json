@@ -1,0 +1,22 @@
+{
+  "name": "fipe_data_engineer_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MouraM4/fipe_data_engineer_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MouraM4/fipe_data_engineer_project/issues"
+  },
+  "homepage": "https://github.com/MouraM4/fipe_data_engineer_project#readme",
+  "devDependencies": {
+    "serverless-deployment-bucket": "^1.6.0"
+  }
+}
