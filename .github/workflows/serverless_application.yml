@@ -16,18 +16,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      # - name: Set Up Credentials
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #   run: chmod +x ./.github/install-credentials.sh && ./.github/install-credentials.sh
+      - name: Install Serverless and npm dependencies
+        run: sudo npm i -g serverless npm@latest
+      - name: Install npm dependencies  
+        run: npm install
       - name: Deploy Application
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          chmod +x ./.github/install-credentials.sh && ./.github/install-credentials.sh
-          sudo npm i -g serverless npm@latest
-          npm install
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           sls deploy
-      # - name: Install Serverless and npm dependencies
-      #   run: sudo npm i -g serverless npm@latest
-      # - name: Install npm dependencies  
-      #   run: npm install
-      # - name: Deploy Application
-      #   run: sls deploy
