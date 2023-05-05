@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install Credentials
+        run: chmod +x ./.github/install-credentials.sh && ./.github/install-credentials.sh
       - name: Install Serverless and npm dependencies
         run: sudo npm i -g serverless npm@latest
       - name: Install npm dependencies  
