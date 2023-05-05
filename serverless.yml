@@ -3,7 +3,6 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  profile: default
   deploymentBucket:
     name: serverless-fipe-deploy
     serverSideEncryption: AES256
