@@ -10,7 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
-      - run: |
+      - name: Deploy Infrastructure with Terraform
+        run: |
           cd terraform/
           terraform init
           terraform plan
