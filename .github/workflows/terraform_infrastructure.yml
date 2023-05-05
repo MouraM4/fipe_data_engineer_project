@@ -13,5 +13,7 @@ jobs:
       - name: Deploy Infrastructure with Terraform
         run: |
           cd terraform/
+          export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+          export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
           terraform init
           terraform plan
