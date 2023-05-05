@@ -8,6 +8,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
       - run: cd terraform/
       - run: terraform init
