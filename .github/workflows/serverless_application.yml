@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Serverless and npm dependencies
-        run: sudo npm i -g serverless@2.52.0 npm@latest
+        run: sudo npm i -g serverless npm@latest
       - name: Install npm dependencies  
         run: npm install
       - name: Deploy Application
