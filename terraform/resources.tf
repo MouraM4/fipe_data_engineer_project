@@ -12,12 +12,10 @@ resource "aws_s3_bucket" "fipe_bronze_layer_bucket" {
     }
   }
 
-  tags = {
-    Name       = "fipe-project-bronze-layer"
-    Department = "Technology"
-    Owner      = "mateus_moura"
-    Project    = "fipe-project"
-  }
+  tags = merge(
+    local.common_tags,
+    { Name = "fipe-project-bronze-layer" }
+  )
 }
 
 
@@ -32,12 +30,10 @@ resource "aws_s3_bucket" "fipe_silver_layer_bucket" {
     }
   }
 
-  tags = {
-    Name       = "fipe-project-silver-layer"
-    Department = "Technology"
-    Owner      = "mateus_moura"
-    Project    = "fipe-project"
-  }
+  tags = merge(
+    local.common_tags,
+    { Name = "fipe-project-silver-layer" }
+  )
 }
 
 
@@ -47,12 +43,10 @@ resource "aws_redshiftserverless_namespace" "fipe_redshift" {
   namespace_name       = "default"
   default_iam_role_arn = "arn:aws:iam::776769614840:role/redshift-spectrum"
 
-  tags = {
-    Name       = "default_redhisft_warehouse"
-    Department = "Technology"
-    Owner      = "mateus_moura"
-    Project    = "fipe-project"
-  }
+  tags = merge(
+    local.common_tags,
+    { Name = "default_redshift_warehouse" }
+  )
 }
 
 
@@ -78,10 +72,9 @@ resource "aws_kinesis_firehose_delivery_stream" "fipe_firehose" {
       enabled = false
     }
   }
-  tags = {
-    Departament = "technology"
-    Name        = "kinesis-firehose-fipe-project"
-    Owner       = "mateus_moura"
-  }
+  tags = merge(
+    local.common_tags,
+    { Name = "kinesis-firehose-fipe-project" }
+  )
 }
 
